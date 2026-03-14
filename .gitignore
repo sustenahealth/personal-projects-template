@@ -1,0 +1,17 @@
+# Binary/large files — store in OneDrive instead
+*.pdf
+*.png
+*.jpg
+*.xlsx
+*.xlsm
+*.pptx
+*.docx
+*.zip
+
+# Generated output — recreate by running scripts
+output/
+
+# System files
+__pycache__/
+*.pyc
+.DS_Store
