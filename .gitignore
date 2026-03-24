@@ -1,11 +1,6 @@
-# Binary/large files — store in OneDrive instead
-*.pdf
+# Binary/large files — Office/PDF/Markdown use Git LFS (see .gitattributes)
 *.png
 *.jpg
-*.xlsx
-*.xlsm
-*.pptx
-*.docx
 *.zip
 
 # Generated output — recreate by running scripts
