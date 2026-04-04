@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evidence_item",
+  "title": "EvidenceItem",
+  "description": "Provenance attached to a dossier field. Every non-null dossier field must carry at least one EvidenceItem.",
+  "type": "object",
+  "required": ["field_name", "value", "source_type", "extraction_method", "confidence"],
+  "properties": {
+    "field_name": {
+      "type": "string",
+      "description": "The dossier field this evidence supports"
+    },
+    "value": {
+      "type": "string",
+      "description": "The raw value as extracted from the source"
+    },
+    "source_type": {
+      "type": "string",
+      "description": "e.g. 'pubmed', 'nppes', 'perplexity', 'institutional_page'"
+    },
+    "source_url": {
+      "type": ["string", "null"]
+    },
+    "source_title": {
+      "type": ["string", "null"]
+    },
+    "evidence_snippet": {
+      "type": ["string", "null"],
+      "description": "Verbatim snippet from the source supporting the value"
+    },
+    "extraction_method": {
+      "type": "string",
+      "enum": ["structured_api", "perplexity", "llm_synthesis", "manual"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "high=structured API/official source; medium=strong secondary/multi-source; low=inferred/weak"
+    },
+    "retrieved_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "review_status": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected"],
+      "default": "pending"
+    }
+  }
+}

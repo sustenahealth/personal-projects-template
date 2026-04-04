@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dossier_output",
+  "title": "LangGraphResponse",
+  "description": "Full response returned by POST /synthesize to n8n.",
+  "type": "object",
+  "required": ["contract_version", "run_id", "run_status", "dossier_quality_tier", "dossier"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "0.1.0" },
+    "run_id": { "type": "string" },
+    "run_status": {
+      "type": "string",
+      "enum": ["success", "success_with_warnings", "needs_follow_up", "failed"]
+    },
+    "dossier_quality_tier": {
+      "type": "string",
+      "enum": ["Good", "UsableButIncomplete", "Failed"]
+    },
+    "dossier": {
+      "type": "object",
+      "description": "The structured PhysicianDossier",
+      "required": ["identity"],
+      "properties": {
+        "identity": {
+          "type": "object",
+          "required": ["state", "decision_log"],
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": ["resolved_confidently", "resolved_with_warning", "unresolved"]
+            },
+            "preferred_npi": { "type": ["string", "null"] },
+            "preferred_name": { "type": ["string", "null"] },
+            "preferred_specialty": { "type": ["string", "null"] },
+            "preferred_institution": { "type": ["string", "null"] },
+            "decision_log": { "type": "string" },
+            "evidence": { "type": "array" }
+          }
+        },
+        "current_role": { "type": "object" },
+        "education": { "type": "array" },
+        "education_null_reason": {
+          "type": ["string", "null"],
+          "enum": ["not_researched", "not_found", "ambiguous", "not_applicable", null]
+        },
+        "training": { "type": "array" },
+        "training_null_reason": {
+          "type": ["string", "null"],
+          "enum": ["not_researched", "not_found", "ambiguous", "not_applicable", null]
+        },
+        "publications": { "type": "array" },
+        "publications_null_reason": {
+          "type": ["string", "null"],
+          "enum": ["not_researched", "not_found", "ambiguous", "not_applicable", null]
+        },
+        "committees_societies": { "type": "array" },
+        "committees_null_reason": {
+          "type": ["string", "null"],
+          "enum": ["not_researched", "not_found", "ambiguous", "not_applicable", null],
+          "description": "MUST be set if committees_societies is empty"
+        },
+        "awards": { "type": "array" },
+        "awards_null_reason": {
+          "type": ["string", "null"],
+          "enum": ["not_researched", "not_found", "ambiguous", "not_applicable", null]
+        },
+        "public_presence": { "type": "object" }
+      }
+    },
+    "relationship_records": {
+      "type": "array",
+      "items": { "$ref": "relationship_record" }
+    },
+    "pda_relationship_rows": {
+      "type": "array",
+      "description": "PDA custom_data CSV rows, one per relationship",
+      "items": {
+        "type": "object",
+        "required": ["data_label", "hospital", "service_line", "name", "data_value"],
+        "properties": {
+          "data_label": { "type": "string" },
+          "hospital": { "type": "string" },
+          "service_line": { "type": "string" },
+          "username": { "type": ["string", "null"] },
+          "npi": { "type": ["string", "null"] },
+          "name": { "type": "string" },
+          "data_value": { "type": "string" },
+          "other": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "run_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["issue_type", "severity", "message", "source_step", "blocking"],
+        "properties": {
+          "issue_type": {
+            "type": "string",
+            "enum": ["ambiguity", "missing_data", "source_failure", "conflict", "low_confidence"]
+          },
+          "severity": { "type": "string", "enum": ["blocking", "warning", "info"] },
+          "message": { "type": "string" },
+          "source_step": { "type": "string" },
+          "field_affected": { "type": ["string", "null"] },
+          "blocking": { "type": "boolean" }
+        }
+      }
+    },
+    "decision_log": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "total_duration_seconds": { "type": ["number", "null"] },
+        "llm_calls": { "type": "integer" },
+        "llm_tokens_used": { "type": "integer" },
+        "sources_used": { "type": "array", "items": { "type": "string" } },
+        "publications_found": { "type": "integer" },
+        "relationships_extracted": { "type": "integer" },
+        "estimated_cost_usd": { "type": ["number", "null"] }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

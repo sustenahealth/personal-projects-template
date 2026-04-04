@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "relationship_record",
+  "title": "RelationshipRecord",
+  "description": "A direct relationship between two physicians. V1: PublishedWith, StrongPublishedWith, InstitutionOverlap only. All records require_review=true until human-approved.",
+  "type": "object",
+  "required": [
+    "relationship_type",
+    "source_physician_name",
+    "target_physician_name",
+    "confidence",
+    "evidence_summary"
+  ],
+  "properties": {
+    "relationship_type": {
+      "type": "string",
+      "enum": ["PublishedWith", "StrongPublishedWith", "InstitutionOverlap"]
+    },
+    "source_physician_name": {
+      "type": "string",
+      "description": "The physician being researched"
+    },
+    "source_physician_npi": {
+      "type": ["string", "null"]
+    },
+    "target_physician_name": {
+      "type": "string",
+      "description": "The related physician"
+    },
+    "target_physician_npi": {
+      "type": ["string", "null"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "evidence_summary": {
+      "type": "string",
+      "description": "Human-readable rationale. Required — label alone is not sufficient."
+    },
+    "publication_count": {
+      "type": ["integer", "null"],
+      "description": "Shared publication count for PublishedWith types"
+    },
+    "shared_institutions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "For InstitutionOverlap"
+    },
+    "requires_review": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "input_payload",
+  "title": "LangGraphRequest",
+  "description": "Full payload n8n posts to POST /synthesize. contract_version must be checked by the service.",
+  "type": "object",
+  "required": ["contract_version", "input"],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "0.1.0"
+    },
+    "input": {
+      "type": "object",
+      "required": ["run_id", "name"],
+      "properties": {
+        "run_id": { "type": "string" },
+        "name": { "type": "string" },
+        "institution": { "type": ["string", "null"] },
+        "specialty": { "type": ["string", "null"] },
+        "npi": { "type": ["string", "null"] }
+      }
+    },
+    "identity_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["npi", "first_name", "last_name", "full_name"],
+        "properties": {
+          "npi": { "type": "string" },
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "full_name": { "type": "string" },
+          "specialty": { "type": ["string", "null"] },
+          "state": { "type": ["string", "null"] },
+          "city": { "type": ["string", "null"] },
+          "taxonomy_description": { "type": ["string", "null"] },
+          "is_preferred": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "publication_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "authors", "source"],
+        "properties": {
+          "pmid": { "type": ["string", "null"] },
+          "semantic_scholar_id": { "type": ["string", "null"] },
+          "title": { "type": "string" },
+          "authors": { "type": "array", "items": { "type": "string" } },
+          "year": { "type": ["integer", "null"] },
+          "journal": { "type": ["string", "null"] },
+          "doi": { "type": ["string", "null"] },
+          "source": { "type": "string", "enum": ["pubmed", "semantic_scholar"] },
+          "co_author_npi_candidates": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "semantic_scholar_summary": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "properties": {
+            "author_id": { "type": ["string", "null"] },
+            "paper_count": { "type": ["integer", "null"] },
+            "citation_count": { "type": ["integer", "null"] },
+            "h_index": { "type": ["integer", "null"] },
+            "research_topics": { "type": "array", "items": { "type": "string" } },
+            "top_co_authors": { "type": "array", "items": { "type": "string" } },
+            "retrieval_success": { "type": "boolean" },
+            "failure_reason": { "type": ["string", "null"] }
+          }
+        }
+      ]
+    },
+    "perplexity_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["prompt_key"],
+        "properties": {
+          "prompt_key": {
+            "type": "string",
+            "enum": ["role", "training", "awards_committees", "presence"]
+          },
+          "raw_response": { "type": ["string", "null"] },
+          "citations": { "type": "array", "items": { "type": "string" } },
+          "retrieval_success": { "type": "boolean" },
+          "failure_reason": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "source_metadata": {
+      "type": "object",
+      "properties": {
+        "nppes_queried_at": { "type": ["string", "null"], "format": "date-time" },
+        "pubmed_queried_at": { "type": ["string", "null"], "format": "date-time" },
+        "semantic_scholar_queried_at": { "type": ["string", "null"], "format": "date-time" },
+        "perplexity_queried_at": { "type": ["string", "null"], "format": "date-time" },
+        "nppes_record_count": { "type": "integer" },
+        "pubmed_record_count": { "type": "integer" },
+        "semantic_scholar_record_count": { "type": "integer" }
+      }
+    },
+    "run_context": {
+      "type": "object",
+      "properties": {
+        "requested_by": { "type": ["string", "null"] },
+        "client_hospital": { "type": ["string", "null"] },
+        "service_line": { "type": ["string", "null"] },
+        "campaign_cycle": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
