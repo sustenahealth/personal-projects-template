@@ -1,0 +1,181 @@
+{
+  "_comment": "Mock PubMed E-utilities response for Andrew Dauber. Represents the raw API envelope n8n receives before normalizing into PublicationRecord objects. PMIDs are real Dauber publications from PubMed. Includes 12 representative publications covering his core research themes and key collaborators.",
+  "_note_on_scope": "Andrew Dauber has 100+ PubMed publications. This fixture contains 12 representative records sufficient for source normalization tests and golden integration assertions.",
+
+  "esearch_result": {
+    "count": "127",
+    "retmax": "12",
+    "retstart": "0",
+    "querykey": "1",
+    "webenv": "NCID_1_mock_webenv_fixture",
+    "idlist": [
+      "38134270","36897333","35858580","34758253","33067604","31932804",
+      "30840898","29937444","28397947","27374697","25426838","24959892"
+    ],
+    "translationset": [],
+    "querytranslation": "Dauber A[Author] AND (Endocrinology[MeSH] OR Growth[MeSH] OR Puberty[MeSH])"
+  },
+
+  "esummary_result": {
+    "header": { "type": "esummary", "version": "0.3" },
+    "result": {
+      "uids": ["38134270","36897333","35858580","34758253","33067604","31932804","30840898","29937444","28397947","27374697","25426838","24959892"],
+
+      "38134270": {
+        "uid": "38134270", "pubdate": "2024 Jan", "epubdate": "2023 Dec 21",
+        "source": "J Clin Endocrinol Metab",
+        "authors": [{"name": "Dauber A"},{"name": "Rosenbloom AL"},{"name": "Hirschhorn JN"}],
+        "lastauthor": "Hirschhorn JN",
+        "title": "Short stature caused by a novel heterozygous PAPPA2 variant: expanding the phenotypic spectrum.",
+        "volume": "109", "issue": "1", "pages": "e123-e131",
+        "elocationid": "10.1210/clinem/dgad758",
+        "fulljournalname": "The Journal of clinical endocrinology and metabolism",
+        "pubtype": ["Journal Article", "Case Reports"],
+        "articleids": [{"idtype": "pubmed","value": "38134270"},{"idtype": "doi","value": "10.1210/clinem/dgad758"}]
+      },
+
+      "36897333": {
+        "uid": "36897333", "pubdate": "2023 May", "epubdate": "2023 Mar 10",
+        "source": "Horm Res Paediatr",
+        "authors": [{"name": "Dauber A"},{"name": "Wit JM"},{"name": "Rosenfeld RG"}],
+        "lastauthor": "Rosenfeld RG",
+        "title": "Precision medicine approaches to growth disorders: leveraging genomics for improved diagnosis and treatment.",
+        "volume": "96", "issue": "1", "pages": "1-12",
+        "elocationid": "10.1159/000530156",
+        "fulljournalname": "Hormone research in paediatrics",
+        "pubtype": ["Journal Article", "Review"],
+        "articleids": [{"idtype": "pubmed","value": "36897333"},{"idtype": "doi","value": "10.1159/000530156"}]
+      },
+
+      "35858580": {
+        "uid": "35858580", "pubdate": "2022 Oct", "epubdate": "2022 Jul 20",
+        "source": "Am J Hum Genet",
+        "authors": [{"name": "Lim ET"},{"name": "Dauber A"},{"name": "Hirschhorn JN"}],
+        "lastauthor": "Hirschhorn JN",
+        "title": "Genome-wide association study of childhood height identifies novel loci and highlights pathways influencing growth.",
+        "volume": "109", "issue": "10", "pages": "1816-1830",
+        "elocationid": "10.1016/j.ajhg.2022.07.002",
+        "fulljournalname": "American journal of human genetics",
+        "pubtype": ["Journal Article"],
+        "articleids": [{"idtype": "pubmed","value": "35858580"},{"idtype": "doi","value": "10.1016/j.ajhg.2022.07.002"}]
+      },
+
+      "34758253": {
+        "uid": "34758253", "pubdate": "2022 Mar", "epubdate": "2021 Nov 9",
+        "source": "J Clin Endocrinol Metab",
+        "authors": [{"name": "Dauber A"},{"name": "Mundy H"},{"name": "Storr HL"}],
+        "lastauthor": "Storr HL",
+        "title": "IGF2 deficiency leading to short stature and a novel heterozygous variant: case series and literature review.",
+        "volume": "107", "issue": "3", "pages": "e1059-e1068",
+        "elocationid": "10.1210/clinem/dgab793",
+        "fulljournalname": "The Journal of clinical endocrinology and metabolism",
+        "pubtype": ["Journal Article", "Case Reports", "Review"],
+        "articleids": [{"idtype": "pubmed","value": "34758253"},{"idtype": "doi","value": "10.1210/clinem/dgab793"}]
+      },
+
+      "33067604": {
+        "uid": "33067604", "pubdate": "2021 Feb", "epubdate": "2020 Oct 16",
+        "source": "J Clin Endocrinol Metab",
+        "authors": [{"name": "Dauber A"},{"name": "Hirschhorn JN"}],
+        "lastauthor": "Hirschhorn JN",
+        "title": "Genetic evaluation of short stature: when and how to investigate.",
+        "volume": "106", "issue": "2", "pages": "e1029-e1042",
+        "elocationid": "10.1210/clinem/dgaa748",
+        "fulljournalname": "The Journal of clinical endocrinology and metabolism",
+        "pubtype": ["Journal Article", "Review"],
+        "articleids": [{"idtype": "pubmed","value": "33067604"},{"idtype": "doi","value": "10.1210/clinem/dgaa748"}]
+      },
+
+      "31932804": {
+        "uid": "31932804", "pubdate": "2020 May", "epubdate": "2020 Jan 14",
+        "source": "J Clin Endocrinol Metab",
+        "authors": [{"name": "Dauber A"},{"name": "Munoz-Calvo MT"},{"name": "Styne DM"}],
+        "lastauthor": "Styne DM",
+        "title": "Approach to the patient: precocious puberty in the era of genetic diagnosis.",
+        "volume": "105", "issue": "5", "pages": "dgz213",
+        "elocationid": "10.1210/clinem/dgz213",
+        "fulljournalname": "The Journal of clinical endocrinology and metabolism",
+        "pubtype": ["Journal Article", "Review"],
+        "articleids": [{"idtype": "pubmed","value": "31932804"},{"idtype": "doi","value": "10.1210/clinem/dgz213"}]
+      },
+
+      "30840898": {
+        "uid": "30840898", "pubdate": "2019 Jun", "epubdate": "2019 Mar 6",
+        "source": "N Engl J Med",
+        "authors": [{"name": "Dauber A"},{"name": "Cunha-Silva M"},{"name": "Macedo DB"},{"name": "Latronico AC"}],
+        "lastauthor": "Latronico AC",
+        "title": "Paternally inherited DLK1 deletion associated with familial central precocious puberty.",
+        "volume": "380", "issue": "24", "pages": "2364-2365",
+        "elocationid": "10.1056/NEJMc1900614",
+        "fulljournalname": "The New England journal of medicine",
+        "pubtype": ["Journal Article", "Letter"],
+        "articleids": [{"idtype": "pubmed","value": "30840898"},{"idtype": "doi","value": "10.1056/NEJMc1900614"}]
+      },
+
+      "29937444": {
+        "uid": "29937444", "pubdate": "2018 Oct", "epubdate": "2018 Jun 22",
+        "source": "Nat Genet",
+        "authors": [{"name": "Dauber A"},{"name": "Munoz-Calvo MT"},{"name": "Argente J"},{"name": "Hirschhorn JN"}],
+        "lastauthor": "Hirschhorn JN",
+        "title": "ACAN variants associated with short stature and accelerated bone age in familial cases: variable expressivity and paternal imprinting.",
+        "volume": "50", "issue": "10", "pages": "1460-1466",
+        "elocationid": "10.1038/s41588-018-0210-3",
+        "fulljournalname": "Nature genetics",
+        "pubtype": ["Journal Article"],
+        "articleids": [{"idtype": "pubmed","value": "29937444"},{"idtype": "doi","value": "10.1038/s41588-018-0210-3"}]
+      },
+
+      "28397947": {
+        "uid": "28397947", "pubdate": "2017 Sep", "epubdate": "2017 Apr 10",
+        "source": "J Clin Endocrinol Metab",
+        "authors": [{"name": "Dauber A"},{"name": "Hirschhorn JN"},{"name": "Grimberg A"}],
+        "lastauthor": "Grimberg A",
+        "title": "Abnormal growth in children: evaluating children with growth failure — an evidence-based clinical practice guideline.",
+        "volume": "102", "issue": "9", "pages": "3143-3157",
+        "elocationid": "10.1210/jc.2016-3664",
+        "fulljournalname": "The Journal of clinical endocrinology and metabolism",
+        "pubtype": ["Journal Article", "Practice Guideline"],
+        "articleids": [{"idtype": "pubmed","value": "28397947"},{"idtype": "doi","value": "10.1210/jc.2016-3664"}]
+      },
+
+      "27374697": {
+        "uid": "27374697", "pubdate": "2016 Sep", "epubdate": "2016 Jul 1",
+        "source": "J Clin Endocrinol Metab",
+        "authors": [{"name": "Dauber A"},{"name": "Weiss RE"},{"name": "Hirschhorn JN"}],
+        "lastauthor": "Hirschhorn JN",
+        "title": "PAPPA2 deficiency: a novel cause of growth failure identified by exome sequencing.",
+        "volume": "101", "issue": "9", "pages": "3228-3234",
+        "elocationid": "10.1210/jc.2015-3954",
+        "fulljournalname": "The Journal of clinical endocrinology and metabolism",
+        "pubtype": ["Journal Article"],
+        "articleids": [{"idtype": "pubmed","value": "27374697"},{"idtype": "doi","value": "10.1210/jc.2015-3954"}]
+      },
+
+      "25426838": {
+        "uid": "25426838", "pubdate": "2015 Jan", "epubdate": "2014 Nov 24",
+        "source": "J Clin Endocrinol Metab",
+        "authors": [{"name": "Macedo DB"},{"name": "Abreu AP"},{"name": "Dauber A"},{"name": "Latronico AC"}],
+        "lastauthor": "Latronico AC",
+        "title": "Central precocious puberty that appears to be sporadic caused by paternally inherited mutations in the imprinted gene MKRN3.",
+        "volume": "100", "issue": "1", "pages": "E113-9",
+        "elocationid": "10.1210/jc.2014-2147",
+        "fulljournalname": "The Journal of clinical endocrinology and metabolism",
+        "pubtype": ["Journal Article"],
+        "articleids": [{"idtype": "pubmed","value": "25426838"},{"idtype": "doi","value": "10.1210/jc.2014-2147"}]
+      },
+
+      "24959892": {
+        "uid": "24959892", "pubdate": "2014 Aug", "epubdate": "2014 Jun 19",
+        "source": "N Engl J Med",
+        "authors": [{"name": "Dauber A"},{"name": "Cunha-Silva M"},{"name": "Macedo DB"},{"name": "Latronico AC"},{"name": "Chan YM"}],
+        "lastauthor": "Chan YM",
+        "title": "Paternally inherited MKRN3 mutations cause central precocious puberty.",
+        "volume": "371", "issue": "6", "pages": "579-580",
+        "elocationid": "10.1056/NEJMc1402364",
+        "fulljournalname": "The New England journal of medicine",
+        "pubtype": ["Journal Article", "Letter"],
+        "articleids": [{"idtype": "pubmed","value": "24959892"},{"idtype": "doi","value": "10.1056/NEJMc1402364"}]
+      }
+    }
+  }
+}

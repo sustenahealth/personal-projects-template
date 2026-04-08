@@ -1,0 +1,67 @@
+{
+  "_comment": "Mock NPPES NPI Registry v2.1 API response for a name search on 'Andrew Dauber'. Represents the raw envelope n8n receives before normalizing into NPPESCandidate objects. NPI 1750489684 is a placeholder — must be verified against the live NPPES registry in Milestone 2.",
+  "_query": "https://npiregistry.cms.hhs.gov/api/?version=2.1&first_name=Andrew&last_name=Dauber&limit=10",
+  "result_count": 1,
+  "results": [
+    {
+      "created_epoch": "1212534000",
+      "enumeration_type": "NPI-1",
+      "last_updated_epoch": "1690000000",
+      "number": "1750489684",
+      "addresses": [
+        {
+          "address_1": "111 MICHIGAN AVE NW",
+          "address_2": "",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "",
+          "postal_code": "200102916",
+          "state": "DC",
+          "telephone_number": "202-476-5000"
+        },
+        {
+          "address_1": "111 MICHIGAN AVE NW",
+          "address_2": "",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "",
+          "postal_code": "200102916",
+          "state": "DC",
+          "telephone_number": "202-476-5000"
+        }
+      ],
+      "basic": {
+        "credential": "MD",
+        "enumeration_date": "2008-06-04",
+        "first_name": "ANDREW",
+        "gender": "M",
+        "last_name": "DAUBER",
+        "last_updated": "2023-07-22",
+        "middle_name": "",
+        "name": "DAUBER ANDREW",
+        "name_prefix": "",
+        "name_suffix": "",
+        "status": "A"
+      },
+      "endpoints": [],
+      "identifiers": [],
+      "other_names": [],
+      "taxonomies": [
+        {
+          "code": "2080P0205X",
+          "desc": "Pediatric Endocrinology & Diabetes",
+          "license": "MD45678",
+          "primary": true,
+          "state": "DC",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

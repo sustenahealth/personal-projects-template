@@ -1,0 +1,102 @@
+{
+  "_comment": "Expected facts for Andrew Dauber golden integration test. These are assertions, not a full dossier mirror. Tests check that each required fact is present in the dossier output — not that the exact JSON matches. LLM-derived fields are tested for fact presence, not string equality.",
+
+  "identity": {
+    "state_must_not_be": "unresolved",
+    "preferred_name_must_contain": "Dauber",
+    "preferred_institution_must_contain": "Children's National",
+    "preferred_specialty_must_contain_one_of": ["Endocrinology", "Pediatric Endocrinology"],
+    "evidence_required": true
+  },
+
+  "current_role": {
+    "title_must_contain_all_of": ["Chief", "Endocrinology"],
+    "institution_must_contain": "Children's National",
+    "null_reason_must_be": null,
+    "evidence_required": true
+  },
+
+  "training": {
+    "null_reason_must_be": null,
+    "must_include": [
+      {
+        "record_type": "medical_school",
+        "institution_must_contain_one_of": ["Harvard Medical School", "Harvard"]
+      },
+      {
+        "record_type_one_of": ["residency", "fellowship"],
+        "institution_must_contain_one_of": ["Boston Children's", "Harvard", "Children's Hospital Boston"]
+      },
+      {
+        "record_type": "fellowship",
+        "specialty_must_contain_one_of": ["Endocrinology", "Pediatric Endocrinology"]
+      }
+    ],
+    "_note": "Columbia is likely undergrad — not asserting medical_school=Columbia since Harvard Medical School is the MD."
+  },
+
+  "publications": {
+    "null_reason_must_be": null,
+    "min_count": 20,
+    "_note_on_min_count": "Dauber has 100+ PubMed publications. 20 is a low floor — if we get fewer than this something is wrong with retrieval.",
+    "must_include_at_least_one_with_topic_containing": ["MKRN3", "growth", "precocious puberty", "short stature"],
+    "known_co_authors_must_appear_in_at_least_one_publication": ["Hirschhorn"],
+    "evidence_required": true,
+    "is_candidate_only_records_must_have_rationale": true
+  },
+
+  "committees_and_societies": {
+    "null_reason_must_not_be": "not_researched",
+    "_note": "awards_committees_presence prompt is mandatory. null_reason may be not_found if no memberships are located, but not_researched means the prompt was skipped — that is a test failure.",
+    "known_societies_to_check": [
+      "Pediatric Endocrine Society",
+      "Endocrine Society",
+      "Lawson Wilkins Pediatric Endocrine Society"
+    ],
+    "evidence_required_if_populated": true
+  },
+
+  "awards": {
+    "known_awards": [
+      {
+        "name_must_contain": "Weitzman",
+        "organization_must_contain_one_of": ["Pediatric Endocrine Society", "Endocrine"]
+      }
+    ],
+    "_note": "Richard E. Weitzman Outstanding Early Career Investigator Award is documented. Assert if found — do not fail if not returned.",
+    "evidence_required_if_populated": true
+  },
+
+  "relationships": {
+    "min_count": 1,
+    "must_include_at_least_one": [
+      {
+        "target_name_must_contain": "Hirschhorn",
+        "type_must_be_one_of": ["PublishedWith", "StrongPublishedWith"],
+        "_note": "Joel Hirschhorn is Dauber's most documented collaborator. 15+ shared publications documented."
+      }
+    ],
+    "all_records_must_have_evidence_summary": true,
+    "all_records_must_have_requires_review_true": true,
+    "relationship_suppressed_if_identity": "unresolved"
+  },
+
+  "quality": {
+    "quality_tier_must_be_one_of": ["Good", "UsableButIncomplete"],
+    "quality_tier_must_not_be": "Failed",
+    "run_status_must_not_be": "failed"
+  },
+
+  "evidence_rules": {
+    "every_non_null_field_must_have_evidence": true,
+    "forbidden_extraction_methods_for_high_confidence": [],
+    "_note": "No LLM-derived field may be marked confidence=high unless it comes from a structured API (NPPES, PubMed). Perplexity-derived fields max out at medium."
+  },
+
+  "forbidden": {
+    "must_not_infer_committee_with_relationships": true,
+    "must_not_infer_mentor_mentee": true,
+    "must_not_create_relationship_without_evidence_summary": true,
+    "must_not_mark_committees_not_researched_if_prompt_ran": true
+  }
+}

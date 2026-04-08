@@ -1,0 +1,34 @@
+{
+  "contract_version": "0.1.0",
+  "input": {
+    "run_id": "run_20260406_000000_andrew_dauber",
+    "name": "Andrew Dauber",
+    "institution": "Children's National Hospital",
+    "specialty": "Pediatric Endocrinology",
+    "npi": null
+  },
+  "identity_candidates": [
+    {
+      "npi": "1750489684",
+      "first_name": "Andrew",
+      "last_name": "Dauber",
+      "full_name": "Andrew Dauber",
+      "specialty": "Pediatrics",
+      "state": "DC",
+      "city": "Washington",
+      "taxonomy_description": "Pediatric Endocrinology & Diabetes",
+      "is_preferred": false
+    }
+  ],
+  "publication_records": [],
+  "perplexity_results": [],
+  "source_status": {
+    "nppes_success": true,
+    "pubmed_success": false,
+    "perplexity_role_training_success": false,
+    "perplexity_awards_committees_success": false
+  },
+  "requested_by": "ross",
+  "client_hospital": null,
+  "service_line": null
+}
