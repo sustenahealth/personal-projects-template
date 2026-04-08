@@ -1,0 +1,35 @@
+{
+  "_comment": "Mock Perplexity API response for the awards_committees_presence prompt — covers awards, honors, society memberships, committee roles, editorial boards, and public professional presence. This prompt is MANDATORY — must always run.",
+  "_prompt_key": "awards_committees_presence",
+  "_physician": "Andrew Dauber",
+
+  "id": "chatcmpl-mock-awards-committees-andrew-dauber-fixture",
+  "model": "llama-3.1-sonar-large-128k-online",
+  "object": "chat.completion",
+  "created": 1712350120,
+  "citations": [
+    "https://www.pedsendo.org/awards/weitzman-award/",
+    "https://www.pedsendo.org/",
+    "https://www.endocrine.org/",
+    "https://childrensnational.org/find-a-doctor/andrew-dauber",
+    "https://www.linkedin.com/in/andrew-dauber-md/",
+    "https://twitter.com/DrAndrewDauber",
+    "https://pubmed.ncbi.nlm.nih.gov/?term=Dauber+A%5BAuthor%5D"
+  ],
+  "choices": [
+    {
+      "index": 0,
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "## Awards and Honors\n\nDr. Andrew Dauber is the recipient of the **Richard E. Weitzman Outstanding Early Career Investigator Award**, presented by the Pediatric Endocrine Society (PES) [1]. This award recognizes outstanding contributions to research in pediatric endocrinology by an early-career investigator. The award is one of the most prestigious honors given by PES to physician-scientists in the field.\n\n## Society Memberships\n\nDr. Dauber is a member of the **Pediatric Endocrine Society (PES)** [2], the primary professional society for pediatric endocrinologists in North America. PES was previously known as the Lawson Wilkins Pediatric Endocrine Society (LWPES) before its 2010 rebranding.\n\nHe is also a member of the **Endocrine Society** [3], the international professional organization for endocrinologists across all subspecialties.\n\n## Committee and Editorial Roles\n\nDr. Dauber has been involved in professional society activities within PES, including participation in scientific program committees and working groups related to growth disorders and genetic endocrinology [2]. Specific current committee assignments were not confirmed from available sources at time of search.\n\nHe has served as a peer reviewer for major journals in the field, including the Journal of Clinical Endocrinology and Metabolism (JCEM) and the New England Journal of Medicine, though formal editorial board membership was not confirmed from available sources.\n\n## Public Professional Presence\n\nDr. Dauber maintains an institutional profile on the Children's National Hospital website [4], which lists his clinical focus areas, research interests, and contact information for patient referrals.\n\nHe is professionally active on LinkedIn [5] and on X (formerly Twitter) under the handle @DrAndrewDauber [6], where he engages with the pediatric endocrinology and genetics community.\n\nHis PubMed publication record is publicly indexed and reflects over 100 peer-reviewed publications [7], predominantly in growth disorders, precocious puberty, and pediatric endocrine genomics."
+      },
+      "delta": {"role": "assistant", "content": ""}
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 203,
+    "completion_tokens": 378,
+    "total_tokens": 581
+  }
+}

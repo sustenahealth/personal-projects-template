@@ -1,0 +1,229 @@
+{
+  "main": {
+    "id": "1bce5c63f37023cf",
+    "type": "split",
+    "children": [
+      {
+        "id": "50894d647e570e5e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d48f2b1061d50121",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "c47eb2a56cf05328",
+    "type": "split",
+    "children": [
+      {
+        "id": "93eeaf7c52d0d32e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a86728c043104087",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "c5319797eab3f563",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "49ff8ec33c722517",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e72f48aa5152c03f",
+    "type": "split",
+    "children": [
+      {
+        "id": "8f48538be34b499d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4f5b2463476511b1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "efc79676837e6e0d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "a166421d40e98768",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "ced0c47619505f8e",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "529b4551acfa5d72",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "obsidian-importer:Open Importer": false
+    }
+  },
+  "active": "d48f2b1061d50121",
+  "lastOpenFiles": [
+    "aa82dbe8-6aa8-45d0-8ff3-8dc4f628e607.png.md",
+    "Notion/Teamspace Home.md",
+    "Notion/Reputation Economics — End-to-End Process Model/Agentic Desk Research — MVP Implementation Plan/Agentic Desk Research — MVP Implementation Plan.md",
+    "Notion/Reputation Economics — End-to-End Process Model/AI-Enabled Physician Relations — From Process Model to Platform.md",
+    "Nemours Case Study/Physician Marketing Best Practices — Combined Case Study & Deep Research Prompt.md",
+    "Nemours Case Study",
+    "Notion/Documentation/Forecasting - Scenario Planning Fundamentals.md",
+    "AdventHealth_Data_Pipeline-SchemaETL_Design.drawio.png",
+    "Notion/Reputation Economics — End-to-End Process Model/Reputation Economics — End-to-End Process Model.md",
+    "Notion/Ultimate Brain for Notion/Dashboard.md",
+    "Notion/Ultimate Brain for Notion/Ultimate Brain for Notion.md",
+    "aa82dbe8-6aa8-45d0-8ff3-8dc4f628e607.png",
+    "image 13.png",
+    "image.png",
+    "Welcome.md",
+    "Ultimate Brain for Notion.jpeg",
+    "Dashboard.jpeg",
+    "Notion/Ultimate Brain for Notion/My Day/My Day.md",
+    "Notion/Ultimate Brain for Notion/My Day/View High-Priority Projects/View High-Priority Projects.base",
+    "Notion/Ultimate Brain for Notion/My Day/View High-Priority Projects",
+    "Notion/Ultimate Brain for Notion/My Day/View Daily Journal/View Daily Journal.base",
+    "Notion/Ultimate Brain for Notion/My Day/View Daily Journal",
+    "image 15.png",
+    "image 21.png",
+    "image 18.png",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Jimmy Cordy Integris Presentation.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Talk to Lauren about AI.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Review AHFC Presentation.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Get a quote from Kumas.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Look a Nick Parkes Employee Impact.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Recalculate Nurse Staffing.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Condensed version of children's for aho adult.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Meet with Andrew - Nemours.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Reschedule Dermatology.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Jimmy Cordy approach for Integris.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Pablo on Missing Emails.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/John, Cecil, Taylor - CDO of Memorial H.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Wrap up Voting Distance QA.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Send Mandi NPIs of Dox CC & DocNews.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Sit down with Monday for Pablo and Ella.md",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/View Upcoming Tasks.base",
+    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks",
+    "Notion/Ultimate Brain for Notion/My Day",
+    "Notion/Ultimate Brain for Notion",
+    "Notion/Reputation Economics — End-to-End Process Model/Agentic Desk Research — MVP Implementation Plan/Implementation Breakdown — Claude Code Project Scaffold",
+    "image 26.png"
+  ]
+}
