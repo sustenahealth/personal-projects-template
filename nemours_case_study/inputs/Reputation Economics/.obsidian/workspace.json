@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "50894d647e570e5e",
+        "id": "b6ab524cbac3aced",
         "type": "tabs",
         "children": [
           {
-            "id": "d48f2b1061d50121",
+            "id": "04647dea88f99dbe",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "2026-05-01.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2026-05-01"
             }
           }
         ]
@@ -177,8 +181,9 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "d48f2b1061d50121",
+  "active": "04647dea88f99dbe",
   "lastOpenFiles": [
+    "2026-05-01.md",
     "aa82dbe8-6aa8-45d0-8ff3-8dc4f628e607.png.md",
     "Notion/Teamspace Home.md",
     "Notion/Reputation Economics — End-to-End Process Model/Agentic Desk Research — MVP Implementation Plan/Agentic Desk Research — MVP Implementation Plan.md",
@@ -218,7 +223,6 @@
     "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/John, Cecil, Taylor - CDO of Memorial H.md",
     "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Wrap up Voting Distance QA.md",
     "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Send Mandi NPIs of Dox CC & DocNews.md",
-    "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/Sit down with Monday for Pablo and Ella.md",
     "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks/View Upcoming Tasks.base",
     "Notion/Ultimate Brain for Notion/My Day/View Upcoming Tasks",
     "Notion/Ultimate Brain for Notion/My Day",
