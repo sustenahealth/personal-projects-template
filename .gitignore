@@ -10,3 +10,6 @@ output/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Claude session metadata — never commit
+.claude/
