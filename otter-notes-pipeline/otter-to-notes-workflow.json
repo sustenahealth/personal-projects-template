@@ -1,0 +1,542 @@
+{
+  "id": "otterNotesPipelineV1",
+  "name": "Otter -> Notes -> Obsidian + Notion",
+  "nodes": [
+    {
+      "id": "schedule-trigger",
+      "name": "Every 15 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "config",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1",
+              "name": "notionDataSourceId",
+              "type": "string",
+              "value": "2adf4b9b-7120-81e5-9576-000b3240b751"
+            },
+            {
+              "id": "2",
+              "name": "vaultInboxPath",
+              "type": "string",
+              "value": "/vault/01_Inbox/To Process"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "read-unprocessed-rows",
+      "name": "Read Unprocessed Rows",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "Otter Buffer (SELECT ME)"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Sheet1"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "processed",
+              "lookupValue": ""
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "normalize-recording",
+      "name": "Normalize Recording",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const row = $input.item.json;\nconst config = $('Config').first().json;\n\nconst transcriptRaw = row.transcript || '';\nconst truncated = transcriptRaw.length >= 49500;\n\nlet date = row.date;\nif (!date || isNaN(Date.parse(date))) {\n  date = new Date().toISOString().slice(0, 10);\n} else {\n  date = new Date(date).toISOString().slice(0, 10);\n}\n\nreturn {\n  json: {\n    recording_url: row.recording_url || '',\n    title: row.title || 'Untitled Meeting',\n    date,\n    duration_seconds: Number(row.duration_seconds) || 0,\n    transcript: transcriptRaw,\n    summary: row.summary || '',\n    action_items_raw: row.action_items || '',\n    transcript_truncated: truncated,\n    notionDataSourceId: config.notionDataSourceId,\n    vaultInboxPath: config.vaultInboxPath\n  }\n};"
+      }
+    },
+    {
+      "id": "build-anthropic-request",
+      "name": "Build Anthropic Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const item = $input.item.json;\n\nconst transcriptSection = item.transcript_truncated\n  ? `Transcript was truncated in the buffer sheet (50k character cell limit); use this summary and action items instead of the partial transcript.\\nSummary: ${item.summary}\\nAction items (raw): ${item.action_items_raw}`\n  : `Full transcript:\\n${item.transcript}`;\n\nconst systemPrompt = \"You convert raw meeting transcripts into structured meeting notes. Respond with ONLY one valid JSON object - no markdown fences, no prose before or after, no explanation. Schema: tldr (string, 2-3 sentences), key_points (array of strings), decisions (array of strings, empty array if none), action_items (array of strings, empty array if none), open_questions (array of strings, empty array if none), suggested_client (one of: Nemours, AdventHealth, Paraveda, Sustena, CareMedx, ATAC, Encore, Internal - or null if genuinely unclear), suggested_meeting_type (one of: client, internal, 1-1, workshop), attendees (array of attendee names as strings, best effort from the transcript).\";\n\nconst userPrompt = `Meeting title: ${item.title}\\nDate: ${item.date}\\nDuration (seconds): ${item.duration_seconds}\\n\\n${transcriptSection}`;\n\nreturn {\n  json: {\n    ...item,\n    anthropicRequestBody: {\n      model: 'claude-sonnet-5',\n      max_tokens: 2000,\n      system: systemPrompt,\n      messages: [ { role: 'user', content: userPrompt } ]\n    }\n  }\n};"
+      }
+    },
+    {
+      "id": "call-claude-sonnet",
+      "name": "Call Claude Sonnet",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.anthropicRequestBody) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse-synthesis",
+      "name": "Parse Synthesis + Build Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const item = $('Build Anthropic Request').item.json;\nconst claudeResponse = $input.item.json;\n\nlet notes;\ntry {\n  const raw = claudeResponse.content[0].text;\n  notes = JSON.parse(raw);\n} catch (e) {\n  throw new Error('Claude response was not valid JSON: ' + e.message);\n}\n\nconst allowedClients = ['Nemours','AdventHealth','Paraveda','Sustena','CareMedx','ATAC','Encore','Internal'];\nconst allowedTypes = ['client','internal','1-1','workshop'];\n\nconst client = allowedClients.includes(notes.suggested_client) ? notes.suggested_client : null;\nconst meetingType = allowedTypes.includes(notes.suggested_meeting_type) ? notes.suggested_meeting_type : 'internal';\nconst attendees = Array.isArray(notes.attendees) ? notes.attendees : [];\n\nconst today = new Date().toISOString().slice(0, 10);\n\nconst yamlStr = (s) => JSON.stringify(String(s));\nconst yamlArr = (arr) => '[' + arr.map(yamlStr).join(', ') + ']';\n\nconst tags = ['meeting', 'otter-import'];\nif (client) tags.push(client.toLowerCase());\n\nconst frontmatter = [\n  '---',\n  'type: meeting',\n  `tags: ${yamlArr(tags)}`,\n  `meeting_date: ${item.date}`,\n  `meeting_type: ${meetingType}`,\n  `client: ${client ? yamlStr(client) : 'null'}`,\n  `attendees: ${yamlArr(attendees)}`,\n  'promoted: false',\n  `created: ${today}`,\n  `updated: ${today}`,\n  '---',\n  ''\n].join('\\n');\n\nconst section = (title, lines) => lines.length\n  ? `## ${title}\\n\\n` + lines.map(l => `- ${l}`).join('\\n') + '\\n\\n'\n  : '';\n\nconst body = [\n  `# ${item.title}`,\n  '',\n  `**Source:** [Otter recording](${item.recording_url})  `,\n  `**Duration:** ${Math.round(item.duration_seconds / 60)} min`,\n  '',\n  '## TL;DR',\n  '',\n  notes.tldr || '',\n  '',\n  section('Key Points', notes.key_points || []),\n  section('Decisions', notes.decisions || []),\n  section('Action Items', (notes.action_items || []).map(a => `[ ] ${a}`)),\n  section('Open Questions', notes.open_questions || [])\n].join('\\n');\n\nconst noteMarkdown = frontmatter + '\\n' + body;\n\nconst safeTitle = item.title.replace(/[\\\\/:*?\"<>|]/g, '').trim();\nconst filePath = `${item.vaultInboxPath}/${item.date} ${safeTitle}.md`;\n\nconst notionCreateBody = {\n  parent: { type: 'data_source_id', data_source_id: item.notionDataSourceId },\n  properties: {\n    Name: { title: [ { text: { content: item.title } } ] },\n    Type: { select: { name: 'Meeting' } },\n    'Note Date': { date: { start: item.date } },\n    URL: { url: item.recording_url },\n    'Duration (Seconds)': { number: item.duration_seconds }\n  }\n};\n\nconst notionQueryBody = {\n  filter: { property: 'URL', url: { equals: item.recording_url } }\n};\n\nconst blockParagraph = (text) => ({\n  object: 'block',\n  type: 'paragraph',\n  paragraph: { rich_text: [ { type: 'text', text: { content: String(text).slice(0, 2000) } } ] }\n});\n\nconst notionBlocksBody = {\n  children: [\n    blockParagraph(`TL;DR: ${notes.tldr || ''}`),\n    ...(notes.key_points || []).map(p => blockParagraph(`Key point: ${p}`)),\n    ...(notes.decisions || []).map(p => blockParagraph(`Decision: ${p}`)),\n    ...(notes.action_items || []).map(p => blockParagraph(`Action item: ${p}`)),\n    ...(notes.open_questions || []).map(p => blockParagraph(`Open question: ${p}`))\n  ].slice(0, 100)\n};\n\nreturn {\n  json: {\n    ...item,\n    notes,\n    noteMarkdown,\n    filePath,\n    notionCreateBody,\n    notionQueryBody,\n    notionBlocksBody\n  }\n};"
+      }
+    },
+    {
+      "id": "query-notion-existing",
+      "name": "Query Notion for Existing Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'https://api.notion.com/v1/data_sources/' + $json.notionDataSourceId + '/query' }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2025-09-03"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.notionQueryBody) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "dedupe-gate",
+      "name": "Dedupe Gate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1760,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.results.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "create-notion-page",
+      "name": "Create Notion Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1980,
+        -140
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2025-09-03"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Parse Synthesis + Build Payloads').item.json.notionCreateBody) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "append-content-blocks",
+      "name": "Append Content Blocks",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2200,
+        -140
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ 'https://api.notion.com/v1/blocks/' + $json.id + '/children' }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2025-09-03"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Parse Synthesis + Build Payloads').item.json.notionBlocksBody) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "prepare-file-binary",
+      "name": "Prepare File Binary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2420,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const data = $('Parse Synthesis + Build Payloads').item.json;\nconst buffer = Buffer.from(data.noteMarkdown, 'utf-8');\nconst binary = await this.helpers.prepareBinaryData(buffer, data.filePath.split('/').pop());\n\nreturn {\n  json: { filePath: data.filePath },\n  binary: { data: binary }\n};"
+      }
+    },
+    {
+      "id": "write-obsidian-file",
+      "name": "Write Obsidian File",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        2640,
+        0
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.filePath }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "mark-row-processed",
+      "name": "Mark Row Processed",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2860,
+        0
+      ],
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "sheet",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "Otter Buffer (SELECT ME)"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "recording_url": "={{ $('Normalize Recording').item.json.recording_url }}",
+            "processed": "TRUE"
+          },
+          "schema": [
+            {
+              "id": "recording_url",
+              "displayName": "recording_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "processed",
+              "displayName": "processed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "matchingColumns": [
+            "recording_url"
+          ]
+        },
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Every 15 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "Read Unprocessed Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Unprocessed Rows": {
+      "main": [
+        [
+          {
+            "node": "Normalize Recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Recording": {
+      "main": [
+        [
+          {
+            "node": "Build Anthropic Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Anthropic Request": {
+      "main": [
+        [
+          {
+            "node": "Call Claude Sonnet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Claude Sonnet": {
+      "main": [
+        [
+          {
+            "node": "Parse Synthesis + Build Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Synthesis + Build Payloads": {
+      "main": [
+        [
+          {
+            "node": "Query Notion for Existing Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Notion for Existing Page": {
+      "main": [
+        [
+          {
+            "node": "Dedupe Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dedupe Gate": {
+      "main": [
+        [
+          {
+            "node": "Create Notion Page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare File Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Notion Page": {
+      "main": [
+        [
+          {
+            "node": "Append Content Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Content Blocks": {
+      "main": [
+        [
+          {
+            "node": "Prepare File Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare File Binary": {
+      "main": [
+        [
+          {
+            "node": "Write Obsidian File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Obsidian File": {
+      "main": [
+        [
+          {
+            "node": "Mark Row Processed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
